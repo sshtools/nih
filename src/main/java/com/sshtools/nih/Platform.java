@@ -320,6 +320,26 @@ public class Platform {
     /** Generate a canonical String prefix based on the given OS
         type/arch/name.
         @param osType from {@link #getOSType()}
+
+	static String getNativeLibraryOsArchSubPath() {
+		int osType = Platform.getOSType();
+		String arch = Platform.ARCH;
+		if (osType == Platform.WINDOWS) {
+			return "win/" + arch;
+		}
+		if (osType == Platform.MAC) {
+			return "darwin";
+		}
+		if (osType == Platform.LINUX) {
+			return "linux/" + arch;
+		}
+		if (osType == Platform.FREEBSD) {
+			return "freebsd/" + arch;
+		}
+		throw new IllegalStateException("No native support for " + "OS name: " + System.getProperty("os.name")
+				+ " (JVM OS type: " + Platform.getOSType() + ")" + ", arch: " + System.getProperty("os.arch")
+				+ " (JVM arch: " + Platform.ARCH + ")");
+	}
         @param arch from <code>os.arch</code> System property
         @param name from <code>os.name</code> System property
     */

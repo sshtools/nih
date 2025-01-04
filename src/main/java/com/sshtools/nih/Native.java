@@ -42,8 +42,10 @@ import static java.lang.foreign.ValueLayout.JAVA_BYTE;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -57,6 +59,7 @@ import java.lang.foreign.ValueLayout;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -169,7 +172,7 @@ public class Native {
 	
 	/**
      * Add a path to search for the specified library, ahead of any system
-     * paths.  This is similar to setting <code>pty4j.library.path</code>, but
+     * paths.  This is similar to setting <code>nih.library.path</code>, but
      * only extends the search path for a single library.
      *
      * @param libraryName The name of the library to use the path for
@@ -216,9 +219,9 @@ public class Native {
             }
         }
 
-        LOG.log(Level.DEBUG, "Adding paths from pty4j.library.path: " + System.getProperty("pty4j.library.path"));
+        LOG.log(Level.DEBUG, "Adding paths from nih.library.path: " + System.getProperty("nih.library.path"));
 
-        searchPath.addAll(initPaths("pty4j.library.path"));
+        searchPath.addAll(initPaths("nih.library.path"));
         String libraryPath = findLibraryPath(libraryName, searchPath);
         SymbolLookup handle = null;
         //
@@ -307,26 +310,31 @@ public class Native {
             }
             // As a last resort, try to extract the library from the class
             // path, using the current context class loader.
-//            if (handle == 0) {
-//                try {
-//                    File embedded = Native.extractFromResourcePath(libraryName, (ClassLoader)options.get(Library.OPTION_CLASSLOADER));
-//                    if (embedded != null) {
-//                        try {
-//                            handle = Native.open(embedded.getAbsolutePath(), openFlags);
-//                            libraryPath = embedded.getAbsolutePath();
-//                        } finally {
-//                            // Don't leave temporary files around
-//                            if (Native.isUnpacked(embedded)) {
-//                                Native.deleteLibrary(embedded);
-//                            }
-//                        }
-//                    }
-//                }
-//                catch(IOException e2) {
-//                    LOG.log(Level.DEBUG, "Loading failed with message: " + e2.getMessage());
-//                    exceptions.add(e2);
-//                }
-//            }
+            if (handle == null) {
+                try {
+                	String path = getNativeLibraryOsArchSubPath() + "/" + mapSharedLibraryName(libraryName);
+                	InputStream in = Native.class.getClassLoader().getResourceAsStream(path);
+                	if(in == null)
+                		throw new FileNotFoundException(path);
+                	
+                	try {
+                    	Path tmpfile = Files.createTempFile("nih", mapSharedLibraryName(libraryName));
+                    	tmpfile.toFile().deleteOnExit();	
+                    	try(var out = Files.newOutputStream(tmpfile)) {
+                    		in.transferTo(out);
+                    	}                	
+                    	handle = SymbolLookup.libraryLookup(tmpfile, arena);
+                    	libraryPath = tmpfile.toString();
+                	}
+                	finally {
+                		in.close();
+                	}
+                }
+                catch(IOException e2) {
+                    LOG.log(Level.DEBUG, "Loading failed with message: " + e2.getMessage());
+                    exceptions.add(e2);
+                }
+            }
 
             if (handle == null) {
                 StringBuilder sb = new StringBuilder();
@@ -698,4 +706,24 @@ public class Native {
 
         return cpu + kernel + libc;
     }
+	
+	private static String getNativeLibraryOsArchSubPath() {
+		int osType = Platform.getOSType();
+		String arch = Platform.ARCH;
+		if (osType == Platform.WINDOWS) {
+			return "META-INF/shared-libraries/win/" + arch;
+		}
+		if (osType == Platform.MAC) {
+			return "META-INF/shared-libraries/darwin";
+		}
+		if (osType == Platform.LINUX) {
+			return "META-INF/shared-libraries/linux/" + arch;
+		}
+		if (osType == Platform.FREEBSD) {
+			return "META-INF/shared-libraries/freebsd/" + arch;
+		}
+		throw new IllegalStateException("No native support for " + "OS name: " + System.getProperty("os.name")
+				+ " (JVM OS type: " + Platform.getOSType() + ")" + ", arch: " + System.getProperty("os.arch")
+				+ " (JVM arch: " + Platform.ARCH + ")");
+	}
 }

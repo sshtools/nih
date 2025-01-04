@@ -26,9 +26,6 @@
 		<maven.compiler.source>22</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<junit.jupiter.version>5.9.2</junit.jupiter.version>
-		<junit.platform.version>1.9.2</junit.platform.version>
-	    <surefireArgLine></surefireArgLine>
 		<build.projectProperties>${basedir}/jadaptive.build.properties</build.projectProperties>
 		<build.userProperties>${user.home}/.jadaptive.build.properties</build.userProperties>
 		<build.quietProperties>true</build.quietProperties>
@@ -70,18 +67,6 @@
 		<connection>scm:git:https://github.com/sshtools/nih.git</connection>
 	</scm>
 	<dependencies>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${junit.jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit.jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -104,11 +89,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-   				 <version>3.0.0-M8</version>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -120,17 +100,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.4.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.10.1</version>
+					<version>3.12.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>3.3.0</version>
+					<version>3.3.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -140,17 +120,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.5.3</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-ant-plugin</artifactId>
-					<version>2.3</version>
+					<version>3.1.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-    				<version>3.6.3</version>
+    				<version>3.11.2</version>
 					<executions>
 						<execution>
 							<id>javadoc-jar</id>
@@ -176,7 +151,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-gpg-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.2.7</version>
 					<executions>
 						<execution>
 							<id>sign-artifacts</id>
@@ -190,7 +165,7 @@
 				<plugin>
 					<groupId>com.mycila</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>2.3</version>
+					<version>4.6</version>
 					<configuration>
 						<header>src/templates/APACHE-2.txt</header>
 						<properties>
@@ -216,7 +191,7 @@
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.13</version>
+					<version>1.7.0</version>
 					<extensions>true</extensions>
 					<configuration>
 						<serverId>ossrh-sshtools</serverId>

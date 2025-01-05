@@ -57,7 +57,7 @@ build system you use. For example, for Maven itself :-
 
 Simply use `Native.load()` methods instead of FFMAPIs default methods to obtain a `SymbolLookup`. This deals with several platform specific problems that as of writing, the base Java tools do not deal with (Linux library paths with symbolic links, and Mac OS frameworks do not seem to be handled well). 
 
-For example, `Native.load("c", Arean.ofAuto());` will locate that standard C library. 
+For example, `Native.load("c", Arena.ofAuto());` will locate that standard C library. 
 
 ## How To Use With Bundled Libraries
 
@@ -67,8 +67,10 @@ Then to load the library in Java and obtain a `SymbolLookup`, use `Native.load()
 
 For example, say you are working on 64-bit Linux and had a native shared library compiled from `tray.c`. Your native `Makefile` produces a `libtray.so`.
 
-You would place `libtray.so` into `src/main/resource/META-INF/shared-libraries/linux/x86-64`, and then use `Native.load("tray", Area.ofAuto())` to obtain the library handle.
+You would place `libtray.so` into `src/main/resource/META-INF/shared-libraries/linux/x86-64`, and then use `Native.load("tray", Arena.ofAuto())` to obtain the library handle.
 
 If you then want to add Windows support, you would  then place your `tray.dll` into `src/main/resource/META-INF/shared-libraries/windows/x86-64`.
 
+## Origin
 
+The 2 classes in this library originated from JNA, but were adapted to be useful with Java's own FFMAPI. This code, and our minor additions to it are licensed under LGPL 2.1 or later and Apache License 2.0. (starting with JNA version 4.0.0).

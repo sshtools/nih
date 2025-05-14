@@ -47,8 +47,8 @@ build system you use. For example, for Maven itself :-
 <dependencies>
     <dependency>
         <groupId>com.sshtools</groupId>
-        <artifactId>dobbin</artifactId>
-        <version>0.9.0-SNAPSHOT</version>
+        <artifactId>nih</artifactId>
+        <version>0.9.1-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```

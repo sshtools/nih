@@ -6,7 +6,7 @@
 [![javadoc](https://javadoc.io/badge2/com.sshtools/nih/javadoc.svg)](https://javadoc.io/doc/com.sshtools/nih)
 ![JPMS](https://img.shields.io/badge/JPMS-com.sshtools.nih-purple) 
 
-NIH, or (or **Native Integration Helper**) is a tiny library for Java 22 and above that helps with loading native libraries. Based on code from JNA, it deals with bundling platform specific libraries along with your application jars, and overcoming some problems with locating such libraries when using the new FFMAPI available in modern Java.
+NIH (or **Native Integration Helper**), is a tiny library for Java 22 and above that helps with loading native libraries. Based on code from JNA, it deals with bundling platform specific libraries along with your application jars, and overcoming some problems with locating such libraries when using the new FFMAPI available in modern Java.
 
 ## Configuring your project
 

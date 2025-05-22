@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sshtools</groupId>
 	<artifactId>nih</artifactId>
-	<version>0.9.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>NIH - Native Integration Helpers</name>
 	<properties>
 		<maven.compiler.target>22</maven.compiler.target>

@@ -19,7 +19,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.sshtools</groupId>
 	<artifactId>nih</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>NIH - Native Integration Helpers</name>
 	<properties>
 		<maven.compiler.target>22</maven.compiler.target>
@@ -52,16 +52,6 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh-sshtools</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh-sshtools</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 	<scm>
 		<url>https://github.com/sshtools/nih</url>
 		<connection>scm:git:https://github.com/sshtools/nih.git</connection>
@@ -92,6 +82,17 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
+			 	<plugin>
+	          		<groupId>org.sonatype.central</groupId>
+	          		<artifactId>central-publishing-maven-plugin</artifactId>
+	          		<version>0.8.0</version>
+	          		<extensions>true</extensions>
+	          		<configuration>
+	          		    <autoPublish>true</autoPublish>
+	            		<publishingServerId>central-sshtools</publishingServerId>
+                        <waitUntil>published</waitUntil>
+	          		</configuration>
+	        	</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>properties-maven-plugin</artifactId>
@@ -188,17 +189,6 @@
 						</execution>
 					</executions>
 				</plugin>
-				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.7.0</version>
-					<extensions>true</extensions>
-					<configuration>
-						<serverId>ossrh-sshtools</serverId>
-						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-						<autoReleaseAfterClose>true</autoReleaseAfterClose>
-					</configuration>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -226,10 +216,10 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
-					</plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                    </plugin>
 				</plugins>
 			</build>
 		</profile>

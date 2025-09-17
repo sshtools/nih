@@ -714,7 +714,7 @@ public class Native {
 			return "META-INF/shared-libraries/win/" + arch;
 		}
 		if (osType == Platform.MAC) {
-			return "META-INF/shared-libraries/darwin";
+			return "META-INF/shared-libraries/darwin/" + arch;
 		}
 		if (osType == Platform.LINUX) {
 			return "META-INF/shared-libraries/linux/" + arch;
